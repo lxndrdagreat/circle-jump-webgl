@@ -1,9 +1,13 @@
-import {Container, Graphics} from 'pixi.js';
+import { Container, Graphics } from 'pixi.js';
 import Jumper from './jumper';
-import {distanceBetweenVectors, randomInt, SimpleVector2, Vector2} from './utils';
+import {
+  distanceBetweenVectors,
+  randomInt,
+  SimpleVector2,
+  Vector2
+} from './utils';
 
 export default class Circle extends Container {
-
   orbitPivot: Container = new Container();
   orbitPosition: Container = new Container();
   private rotationSpeed: number = Math.PI;
@@ -42,8 +46,14 @@ export default class Circle extends Container {
   }
 
   checkJumperCollision(jumper: Jumper): boolean {
-    if (distanceBetweenVectors(this.position, jumper.position) <= this.radius + 32) {
-      this.orbitPivot.rotation = new Vector2(this.position.x, this.position.y).angleBetween(new Vector2(jumper.position.x, jumper.position.y));
+    if (
+      distanceBetweenVectors(this.position, jumper.position) <=
+      this.radius + 32
+    ) {
+      this.orbitPivot.rotation = new Vector2(
+        this.position.x,
+        this.position.y
+      ).angleBetween(new Vector2(jumper.position.x, jumper.position.y));
       jumper.onAreaEntered(this);
       return true;
     }

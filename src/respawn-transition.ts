@@ -1,12 +1,11 @@
-import {Transition, TransitionOnCompleteHandler} from './transition';
-import {Container} from '@pixi/display';
-import {Ticker} from '@pixi/ticker';
-import {Graphics} from '@pixi/graphics';
+import { Transition, TransitionOnCompleteHandler } from './transition';
+import { Container } from '@pixi/display';
+import { Ticker } from '@pixi/ticker';
+import { Graphics } from '@pixi/graphics';
 
 const SPEED = 1;
 
 export class RespawnTransition extends Transition {
-
   private stage: number = 0;
   private timer: number = SPEED;
 
@@ -26,7 +25,7 @@ export class RespawnTransition extends Transition {
     }
 
     if (this.stage < 2) {
-      this.timer -= Ticker.shared.deltaMS * .001;
+      this.timer -= Ticker.shared.deltaMS * 0.001;
       if (this.timer <= 0) {
         this.timer = SPEED;
         this.stage += 1;

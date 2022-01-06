@@ -1,7 +1,7 @@
-import {DEG_TO_RAD} from '@pixi/math';
+import { DEG_TO_RAD } from '@pixi/math';
 
-export type SimpleVector2 = { x: number; y: number; };
-export type SimpleRect = SimpleVector2 & { width: number; height: number; };
+export type SimpleVector2 = { x: number; y: number };
+export type SimpleRect = SimpleVector2 & { width: number; height: number };
 
 export class Vector2 {
   constructor(public x: number = 0, public y: number = 0) {}
@@ -12,10 +12,7 @@ export class Vector2 {
   }
 
   static copyFrom(other: Vector2 | SimpleVector2): Vector2 {
-    return new Vector2(
-      other.x,
-      other.y
-    );
+    return new Vector2(other.x, other.y);
   }
 
   multiply(amount: number): Vector2 {
@@ -23,10 +20,7 @@ export class Vector2 {
   }
 
   subtract(other: Vector2): Vector2 {
-    return new Vector2(
-      this.x - other.x,
-      this.y - other.y
-    );
+    return new Vector2(this.x - other.x, this.y - other.y);
   }
 
   angle(): number {
@@ -56,7 +50,10 @@ export function toRadians(degrees: number): number {
   return degrees * DEG_TO_RAD;
 }
 
-export function distanceBetweenVectors(a: Vector2 | SimpleVector2, b: Vector2 | SimpleVector2): number {
+export function distanceBetweenVectors(
+  a: Vector2 | SimpleVector2,
+  b: Vector2 | SimpleVector2
+): number {
   return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 }
 

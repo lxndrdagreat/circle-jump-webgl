@@ -1,9 +1,11 @@
-
 export type EventType = 'JumperCaptured';
 
 export class EventSystem {
   private static _instance: EventSystem | null = null;
-  private _subscriptions: Map<EventType, CallableFunction[]> = new Map<EventType, Function[]>();
+  private _subscriptions: Map<EventType, CallableFunction[]> = new Map<
+    EventType,
+    Function[]
+  >();
 
   static get shared(): EventSystem {
     if (EventSystem._instance === null) {

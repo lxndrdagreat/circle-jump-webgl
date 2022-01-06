@@ -3,10 +3,13 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "format": "prettier --write \"src/**/*.{ts,css}\"",
+    "lint": "prettier --check \"src/**/*.{ts,css}\""
   },
   "devDependencies": {
     "pixi.js": "^6.2.1",
+    "prettier": "^2.5.1",
     "typescript": "^4.5.4",
     "vite": "^2.7.10"
   }
