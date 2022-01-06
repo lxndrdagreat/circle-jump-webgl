@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // TODO: replace this with loading promise
   Promise.resolve().then(() => {
-
     stage.addChild(playLayer);
 
     // replace loading with scene
