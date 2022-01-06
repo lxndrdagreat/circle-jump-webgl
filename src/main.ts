@@ -1,5 +1,6 @@
 import './style.css';
-import { autoDetectRenderer, Container, Graphics, Ticker } from 'pixi.js';
+import './stars.css';
+import { autoDetectRenderer, Container, Ticker } from 'pixi.js';
 import { CommonKeys, InputSystem } from './systems/input.system';
 import { Transition } from './transition';
 import Jumper from './jumper';
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderer = autoDetectRenderer({
     antialias: false,
     autoDensity: true,
+    backgroundAlpha: 0,
     width: 480,
     height: 854
   });
@@ -28,10 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // TODO: replace this with loading promise
   Promise.resolve().then(() => {
-    const g = new Graphics();
-    g.beginFill(0x002200);
-    g.drawRect(0, 0, renderer.width, renderer.height);
-    stage.addChild(g);
 
     stage.addChild(playLayer);
 
