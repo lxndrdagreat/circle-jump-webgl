@@ -100,37 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // ease camera
           // FIXME handle camera movement better
-          const cameraMovement = 500 * delta;
-          if (playLayer.pivot.x < cameraTargetPosition.x) {
-            const diff = cameraTargetPosition.x - playLayer.pivot.x;
-            if (diff < cameraMovement) {
-              playLayer.pivot.set(cameraTargetPosition.x, playLayer.pivot.y);
-            } else {
-              playLayer.pivot.set(playLayer.pivot.x + cameraMovement, playLayer.pivot.y);
-            }
-          } else if (playLayer.pivot.x > cameraTargetPosition.x) {
-            const diff = playLayer.pivot.x - cameraTargetPosition.x;
-            if (diff < cameraMovement) {
-              playLayer.pivot.set(cameraTargetPosition.x, playLayer.pivot.y);
-            } else {
-              playLayer.pivot.set(playLayer.pivot.x - cameraMovement, playLayer.pivot.y);
-            }
-          }
-          if (playLayer.pivot.y < cameraTargetPosition.y) {
-            const diff = cameraTargetPosition.y - playLayer.pivot.y;
-            if (diff < cameraMovement) {
-              playLayer.pivot.set(playLayer.pivot.x, cameraTargetPosition.y);
-            } else {
-              playLayer.pivot.set(playLayer.pivot.x, playLayer.pivot.y + cameraMovement);
-            }
-          } else if (playLayer.pivot.y > cameraTargetPosition.y) {
-            const diff = playLayer.pivot.y - cameraTargetPosition.y;
-            if (diff < cameraMovement) {
-              playLayer.pivot.set(playLayer.pivot.x, cameraTargetPosition.y);
-            } else {
-              playLayer.pivot.set(playLayer.pivot.x, playLayer.pivot.y - cameraMovement);
-            }
-          }
+          const cameraMovement = 1000 * delta;
+          const cameraPos = new Vector2(playLayer.pivot.x, playLayer.pivot.y)
+            .moveTowards(cameraTargetPosition, cameraMovement);
+          playLayer.pivot.set(cameraPos.x, cameraPos.y);
 
           if (InputSystem.shared.keyPressed(CommonKeys.Space)) {
             jumper.jump();

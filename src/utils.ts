@@ -11,6 +11,13 @@ export class Vector2 {
     return new Vector2(Math.cos(radians), Math.sin(radians));
   }
 
+  static copyFrom(other: Vector2 | SimpleVector2): Vector2 {
+    return new Vector2(
+      other.x,
+      other.y
+    );
+  }
+
   multiply(amount: number): Vector2 {
     return new Vector2(this.x * amount, this.y * amount);
   }
@@ -26,8 +33,22 @@ export class Vector2 {
     return Math.atan2(this.y, this.x);
   }
 
-  angleBetween(other: Vector2): number {
+  angleBetween(other: Vector2 | SimpleVector2): number {
     return Math.atan2(other.y - this.y, other.x - this.x);
+  }
+
+  distanceFrom(other: Vector2 | SimpleVector2): number {
+    return distanceBetweenVectors(this, other);
+  }
+
+  moveTowards(other: Vector2 | SimpleVector2, distance: number): Vector2 {
+    const angle = this.angleBetween(other);
+    const diff = this.distanceFrom(other);
+    // console.log(angle, diff, distance, this.x + Math.cos(angle) * distance);
+    return new Vector2(
+      this.x + Math.cos(angle) * (distance < diff ? distance : diff),
+      this.y + Math.sin(angle) * (distance < diff ? distance : diff)
+    );
   }
 }
 
