@@ -3,10 +3,11 @@ import './stars.css';
 import { autoDetectRenderer, Container, Ticker } from 'pixi.js';
 import { CommonKeys, InputSystem } from './systems/input.system';
 import { Transition } from './transition';
-import Jumper from './jumper';
+import {Jumper} from './jumper';
 import Circle from './circle';
 import { randomInt, SimpleVector2, Vector2 } from './utils';
 import { EventSystem } from './systems/event.system';
+import {loadGameAssets} from './loading';
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;
@@ -28,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let jumper: Jumper;
   let score = 0;
 
-  // TODO: replace this with loading promise
-  Promise.resolve().then(() => {
+  loadGameAssets().then(() => {
     stage.addChild(playLayer);
 
     // replace loading with scene
@@ -37,12 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.removeChild(wrapper.lastChild);
     }
     wrapper.appendChild(renderer.view);
+    wrapper.classList.add('ready');
 
     function onJumperCaptured(eventArgs: unknown[]): void {
       const [circle] = eventArgs;
       const { x, y } = (circle as Circle).position;
-      // playLayer.pivot.set(-240, -700);
-      // playLayer.position.set(-x, -y);
       cameraTargetPosition.x = -240 + x;
       cameraTargetPosition.y = -700 + y;
       spawnCircle();

@@ -1,32 +1,18 @@
-import { Graphics, Container } from 'pixi.js';
-import { Point } from '@pixi/math';
+import {Sprite} from '@pixi/sprite';
+import {Loader} from '@pixi/loaders';
 import { Vector2 } from './utils';
 import Circle from './circle';
 import { EventSystem } from './systems/event.system';
 
-export default class Jumper extends Container {
+export class Jumper extends Sprite {
   private velocity: Vector2 = new Vector2(100, 0);
   private readonly jumpSpeed: number = 500;
   attachedTo: Circle | null = null;
 
   constructor() {
-    super();
-
-    // TODO update Jumper with sprites
-    const g = new Graphics();
-    g.beginFill(0xffffff);
-
-    const size = 32;
-    g.drawPolygon([
-      new Point(size, 0.5 * size),
-      new Point(0, size),
-      new Point(0, 0)
-    ]);
-    // g.rotation = toRadians(90);
-
-    this.pivot.set(0.5 * size, 0.5 * size);
-
-    this.addChild(g);
+    super(Loader.shared.resources['/public/jumper.png'].texture);
+    this.anchor.set(0.5, 0.5);
+    this.pivot.set(0.5, 1);
   }
 
   jump(): void {
