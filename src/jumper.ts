@@ -1,5 +1,5 @@
-import {Sprite} from '@pixi/sprite';
-import {Loader} from '@pixi/loaders';
+import { Sprite } from '@pixi/sprite';
+import { Loader } from '@pixi/loaders';
 import { Vector2 } from './utils';
 import Circle from './circle';
 import { EventSystem } from './systems/event.system';
@@ -17,6 +17,7 @@ export class Jumper extends Sprite {
 
   jump(): void {
     if (this.attachedTo) {
+      this.attachedTo.haveJumper = false;
       this.attachedTo = null;
       this.velocity = Vector2.fromRotation(this.rotation).multiply(
         this.jumpSpeed

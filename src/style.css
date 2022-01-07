@@ -29,6 +29,28 @@ body {
   z-index: 1;
 }
 
+#ui-layer {
+  z-index: 2;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+#app.ready + #ui-layer {
+  display: block;
+}
+
+#score {
+  color: #ffffff;
+  font-size: 36px;
+  position: absolute;
+  left: 10vw;
+  top: 2vh;
+}
+
 /*!
  * Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
  * Copyright 2015 Daniel Cardoso <@DanielCardoso>

@@ -1,4 +1,4 @@
-export type EventType = 'JumperCaptured';
+export type EventType = 'JumperCaptured' | 'OutOfOrbits';
 
 export class EventSystem {
   private static _instance: EventSystem | null = null;

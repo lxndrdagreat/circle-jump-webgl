@@ -3,11 +3,12 @@ import './stars.css';
 import { autoDetectRenderer, Container, Ticker } from 'pixi.js';
 import { CommonKeys, InputSystem } from './systems/input.system';
 import { Transition } from './transition';
-import {Jumper} from './jumper';
+import { Jumper } from './jumper';
 import Circle from './circle';
 import { randomInt, SimpleVector2, Vector2 } from './utils';
 import { EventSystem } from './systems/event.system';
-import {loadGameAssets} from './loading';
+import { loadGameAssets } from './loading';
+import ui from './ui-utils';
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;
@@ -37,21 +38,31 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.removeChild(wrapper.lastChild);
     }
     wrapper.appendChild(renderer.view);
-    wrapper.classList.add('ready');
 
-    function onJumperCaptured(eventArgs: unknown[]): void {
+    function onJumperCaptured(eventArgs: [Circle]): void {
       const [circle] = eventArgs;
-      const { x, y } = (circle as Circle).position;
+      const { x, y } = circle.position;
       cameraTargetPosition.x = -240 + x;
       cameraTargetPosition.y = -700 + y;
       spawnCircle();
       score += 1;
-      console.log('score', score);
+      ui.setScore(score);
     }
     EventSystem.shared.connect('JumperCaptured', onJumperCaptured);
 
+    function onCircleOutOfOrbits([circle]: [Circle]): void {
+      if (circle !== jumper.attachedTo) {
+        return;
+      }
+      // kill the jumper
+      console.log('out of orbits');
+      newGame();
+    }
+    EventSystem.shared.connect('OutOfOrbits', onCircleOutOfOrbits);
+
     function newGame(): void {
       score = 0;
+      ui.setScore(0);
       playLayer.removeChildren();
       jumper = new Jumper();
       jumper.position.set(startPosition.x, startPosition.y);
@@ -59,19 +70,20 @@ document.addEventListener('DOMContentLoaded', () => {
       cameraTargetPosition.y = -700 + startPosition.y;
       playLayer.pivot.set(cameraTargetPosition.x, cameraTargetPosition.y);
       playLayer.addChild(jumper);
-      spawnCircle(startPosition);
+      spawnCircle(startPosition, 50);
     }
 
-    function spawnCircle(position?: SimpleVector2): void {
+    function spawnCircle(position?: SimpleVector2, radius?: number): void {
       position = position || {
         x: (jumper.attachedTo?.position.x || 0) + randomInt(-150, 150),
         y: (jumper.attachedTo?.position.y || 0) + randomInt(-500, -400)
       };
-      const newCircle = Circle.spawn(position);
+      const newCircle = Circle.spawn(position, radius);
       playLayer.addChild(newCircle);
     }
 
     newGame();
+    wrapper.classList.add('ready');
 
     // Start the game loop
     Ticker.shared.add(() => {
