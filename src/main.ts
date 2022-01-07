@@ -9,7 +9,7 @@ import { randomInt, SimpleVector2, Vector2 } from './utils';
 import { EventSystem } from './systems/event.system';
 import { loadGameAssets } from './loading';
 import ui from './ui-utils';
-import {Trail} from './trail';
+import { Trail } from './trail';
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;

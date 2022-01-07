@@ -1,7 +1,7 @@
 import { Container /*Graphics,*/ /*SCALE_MODES*/ } from 'pixi.js';
 import { Sprite } from '@pixi/sprite';
 import { Loader } from '@pixi/loaders';
-import {Text, TextStyle} from '@pixi/text';
+import { Text, TextStyle } from '@pixi/text';
 import { Jumper } from './jumper';
 import {
   distanceBetweenVectors,
@@ -68,7 +68,7 @@ export default class Circle extends Container {
       dropShadowBlur: 4,
       dropShadowAngle: Math.PI / 6,
       dropShadowDistance: 2,
-      lineJoin: 'round',
+      lineJoin: 'round'
     });
     this.orbitsText = new Text(`${this.currentOrbits}`, style);
     this.orbitsText.anchor.set(0.5, 0.5);

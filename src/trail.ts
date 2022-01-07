@@ -1,14 +1,17 @@
-import {SimpleRope, Container, Point, BLEND_MODES} from 'pixi.js';
-import {Loader} from '@pixi/loaders';
-import {cubicInterpolation, SimpleVector2, Vector2} from './utils';
+import { SimpleRope, Container, Point, BLEND_MODES } from 'pixi.js';
+import { Loader } from '@pixi/loaders';
+import { cubicInterpolation, SimpleVector2, Vector2 } from './utils';
 
 export class Trail extends Container {
-
   private points: Point[] = [];
   private history: [x: number, y: number][] = [];
   private rope: SimpleRope;
 
-  constructor(initialPoint: Point, private ropeSize: number = 100, private historySize: number = 20) {
+  constructor(
+    initialPoint: Point,
+    private ropeSize: number = 100,
+    private historySize: number = 20
+  ) {
     super();
 
     for (let i = 0; i < historySize; ++i) {
@@ -27,18 +30,21 @@ export class Trail extends Container {
 
   addPoint(point: Point | SimpleVector2 | Vector2): void {
     this.history.pop();
-    this.history.unshift([
-      point.x,
-      point.y
-    ]);
+    this.history.unshift([point.x, point.y]);
     // update the rope
-    const historyX = this.history.map(h => h[0]);
-    const historyY = this.history.map(h => h[1]);
+    const historyX = this.history.map((h) => h[0]);
+    const historyY = this.history.map((h) => h[1]);
     for (let i = 0; i < this.ropeSize; ++i) {
       const point = this.points[i];
       // Smooth the curve with cubic interpolation to prevent sharp edges.
-      const ix = cubicInterpolation(historyX, i / this.ropeSize * this.historySize);
-      const iy = cubicInterpolation(historyY, i / this.ropeSize * this.historySize);
+      const ix = cubicInterpolation(
+        historyX,
+        (i / this.ropeSize) * this.historySize
+      );
+      const iy = cubicInterpolation(
+        historyY,
+        (i / this.ropeSize) * this.historySize
+      );
 
       point.x = ix;
       point.y = iy;
