@@ -9,6 +9,7 @@ import { randomInt, SimpleVector2, Vector2 } from './utils';
 import { EventSystem } from './systems/event.system';
 import { loadGameAssets } from './loading';
 import ui from './ui-utils';
+import {Trail} from './trail';
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cameraTargetPosition = new Vector2();
   let jumper: Jumper;
   let score = 0;
+  let trail: Trail;
 
   loadGameAssets().then(() => {
     stage.addChild(playLayer);
@@ -70,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cameraTargetPosition.y = -700 + startPosition.y;
       playLayer.pivot.set(cameraTargetPosition.x, cameraTargetPosition.y);
       playLayer.addChild(jumper);
+      trail = new Trail(jumper.position);
+      playLayer.addChild(trail);
       spawnCircle(startPosition, 50);
     }
 
@@ -91,8 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (activeTransition) {
         activeTransition.update(stage);
-      } else {
+      } else if (jumper) {
         jumper.update(delta);
+        trail.addPoint(jumper.position);
 
         for (const circle of playLayer.children.filter(
           (child) => child instanceof Circle
