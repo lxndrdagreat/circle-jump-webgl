@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function spawnCircle(position?: SimpleVector2, radius?: number): void {
       position = position || {
         x: (jumper.attachedTo?.position.x || 0) + randomInt(-150, 150),
-        y: (jumper.attachedTo?.position.y || 0) + randomInt(-500, -400)
+        y: (jumper.attachedTo?.position.y || 0) + randomInt(-550, -300)
       };
       const newCircle = Circle.spawn(position, radius);
       playLayer.addChild(newCircle);

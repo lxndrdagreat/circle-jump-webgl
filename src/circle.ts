@@ -14,7 +14,8 @@ import { EventSystem } from './systems/event.system';
 export default class Circle extends Container {
   orbitPivot: Container = new Container();
   orbitPosition: Container = new Container();
-  private readonly rotationSpeed: number = Math.PI;
+  private readonly orbitSpeed: number = Math.PI;
+  private readonly rotationSpeed: number = Math.PI * 0.02;
   private orbitStart: number = 0;
   private currentOrbits: number = 2;
   public haveJumper: boolean = false;
@@ -22,6 +23,7 @@ export default class Circle extends Container {
   constructor(public readonly radius: number = 50) {
     super();
 
+    this.orbitSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
     this.rotationSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
 
     // const g = new Graphics();
@@ -59,7 +61,8 @@ export default class Circle extends Container {
   }
 
   update(delta: number): void {
-    this.orbitPivot.rotation += this.rotationSpeed * delta;
+    this.rotation += this.rotationSpeed * delta;
+    this.orbitPivot.rotation += this.orbitSpeed * delta;
     if (this.haveJumper) {
       if (Math.abs(this.orbitPivot.rotation - this.orbitStart) > Math.PI * 2) {
         // one full rotation
