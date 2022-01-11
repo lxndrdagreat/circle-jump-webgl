@@ -12,6 +12,14 @@ import {
 } from './utils';
 import { EventSystem } from './systems/event.system';
 
+let circleUID = 0;
+
+export enum CircleJumperState {
+  Awaiting,
+  HaveJumper,
+  JumperJumped
+}
+
 export default class Circle extends Container {
   orbitPivot: Container = new Container();
   orbitPosition: Container = new Container();
@@ -19,9 +27,10 @@ export default class Circle extends Container {
   private readonly rotationSpeed: number = Math.PI * 0.02;
   private orbitStart: number = 0;
   private currentOrbits: number = 3;
-  public haveJumper: boolean = false;
+  public jumperState: CircleJumperState = CircleJumperState.Awaiting;
   private readonly orbitsText: Text;
   private readonly spr: Sprite;
+  public readonly uid: number = ++circleUID;
 
   constructor(public readonly radius: number = 50) {
     super();
@@ -86,8 +95,8 @@ export default class Circle extends Container {
   update(delta: number): void {
     this.spr.rotation += this.rotationSpeed * delta;
     this.orbitPivot.rotation += this.orbitSpeed * delta;
-    this.orbitsText.visible = this.haveJumper;
-    if (this.haveJumper) {
+    this.orbitsText.visible = this.jumperState === CircleJumperState.HaveJumper;
+    if (this.jumperState === CircleJumperState.HaveJumper) {
       if (Math.abs(this.orbitPivot.rotation - this.orbitStart) > Math.PI * 2) {
         // one full rotation
         this.currentOrbits -= 1;
@@ -112,7 +121,7 @@ export default class Circle extends Container {
         this.position.y
       ).angleBetween(new Vector2(jumper.position.x, jumper.position.y));
       this.orbitStart = this.orbitPivot.rotation;
-      this.haveJumper = true;
+      this.jumperState = CircleJumperState.HaveJumper;
       jumper.onAreaEntered(this);
       return true;
     }

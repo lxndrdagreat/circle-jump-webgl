@@ -1,15 +1,16 @@
 import './style.css';
 import './stars.css';
-import { autoDetectRenderer, Container, Ticker } from 'pixi.js';
-import { CommonKeys, InputSystem } from './systems/input.system';
-import { Transition } from './transition';
-import { Jumper } from './jumper';
-import Circle from './circle';
-import { randomInt, SimpleVector2, Vector2 } from './utils';
-import { EventSystem } from './systems/event.system';
-import { loadGameAssets } from './loading';
+import {autoDetectRenderer, Container, Ticker} from 'pixi.js';
+import {CommonKeys, InputSystem} from './systems/input.system';
+import {Transition} from './transition';
+import {Jumper} from './jumper';
+import Circle, {CircleJumperState} from './circle';
+import {randomInt, SimpleVector2, Vector2} from './utils';
+import {EventSystem} from './systems/event.system';
+import {loadGameAssets} from './loading';
 import ui from './ui-utils';
-import { Trail } from './trail';
+import {Trail} from './trail';
+import {TimersSystem} from './systems/timers.system';
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;
@@ -93,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
     Ticker.shared.add(() => {
       const delta = Ticker.shared.elapsedMS * 0.001;
 
+      TimersSystem.shared.processTimers(delta);
+
       if (activeTransition) {
         activeTransition.update(stage);
       } else if (jumper) {
@@ -101,10 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const circle of playLayer.children.filter(
           (child) => child instanceof Circle
-        )) {
-          (circle as Circle).update(delta);
-          if (!jumper.attachedTo) {
-            (circle as Circle).checkJumperCollision(jumper);
+        ) as Circle[]) {
+          circle.update(delta);
+          if (!jumper.attachedTo && circle.jumperState === CircleJumperState.Awaiting) {
+            circle.checkJumperCollision(jumper);
           }
         }
 
