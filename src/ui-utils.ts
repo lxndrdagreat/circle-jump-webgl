@@ -1,4 +1,4 @@
-import {TimersSystem} from './systems/timers.system';
+import { TimersSystem } from './systems/timers.system';
 
 export function scoreDiv(): HTMLElement {
   const score = document.getElementById('score');
@@ -20,7 +20,7 @@ export function setScore(score: number = 0): void {
   // scoreDiv().textContent = `${score}`;
   scoreDiv().querySelector('span')!.textContent = `${score}`;
   scoreDiv().classList.add('pulse');
-  TimersSystem.shared.add(.5, () => {
+  TimersSystem.shared.add(0.5, () => {
     scoreDiv().classList.remove('pulse');
   });
 }

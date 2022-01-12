@@ -52,7 +52,6 @@ export class InputSystem {
     });
 
     bindElement.addEventListener('click', (event: Event) => {
-      console.log(event.target);
       if ((event.target as HTMLElement).nodeName !== 'CANVAS') {
         return;
       }

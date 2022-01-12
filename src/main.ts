@@ -114,7 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (activeTransition) {
         activeTransition.update(stage);
       } else if (gameState === GameState.TapToStart) {
-        if (InputSystem.shared.keyPressed(CommonKeys.Space) || InputSystem.shared.mouseClicked) {
+        if (
+          InputSystem.shared.keyPressed(CommonKeys.Space) ||
+          InputSystem.shared.mouseClicked
+        ) {
           startGame();
         }
       } else if (gameState === GameState.Playing && jumper) {
@@ -141,7 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ).moveTowards(cameraTargetPosition, cameraMovement);
         playLayer.pivot.set(cameraPos.x, cameraPos.y);
 
-        if (InputSystem.shared.keyPressed(CommonKeys.Space) || InputSystem.shared.mouseClicked) {
+        if (
+          InputSystem.shared.keyPressed(CommonKeys.Space) ||
+          InputSystem.shared.mouseClicked
+        ) {
           jumper.jump();
         }
 
