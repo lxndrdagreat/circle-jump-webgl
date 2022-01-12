@@ -1,16 +1,21 @@
 import './style.css';
 import './stars.css';
-import {autoDetectRenderer, Container, Ticker} from 'pixi.js';
-import {CommonKeys, InputSystem} from './systems/input.system';
-import {Transition} from './transition';
-import {Jumper} from './jumper';
-import Circle, {CircleJumperState} from './circle';
-import {randomInt, SimpleVector2, Vector2} from './utils';
-import {EventSystem} from './systems/event.system';
-import {loadGameAssets} from './loading';
+import { autoDetectRenderer, Container, Ticker } from 'pixi.js';
+import { CommonKeys, InputSystem } from './systems/input.system';
+import { Transition } from './transition';
+import { Jumper } from './jumper';
+import Circle, { CircleJumperState } from './circle';
+import { randomInt, SimpleVector2, Vector2 } from './utils';
+import { EventSystem } from './systems/event.system';
+import { loadGameAssets } from './loading';
 import ui from './ui-utils';
-import {Trail} from './trail';
-import {TimersSystem} from './systems/timers.system';
+import { Trail } from './trail';
+import { TimersSystem } from './systems/timers.system';
+
+enum GameState {
+  TapToStart,
+  Playing
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector<HTMLDivElement>('#app')!;
@@ -32,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let jumper: Jumper;
   let score = 0;
   let trail: Trail;
+  let gameState: GameState = GameState.TapToStart;
 
   loadGameAssets().then(() => {
     stage.addChild(playLayer);
@@ -58,15 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       // kill the jumper
-      console.log('out of orbits');
       newGame();
     }
     EventSystem.shared.connect('OutOfOrbits', onCircleOutOfOrbits);
 
     function newGame(): void {
+      // cleanup / re-init
       score = 0;
       ui.setScore(0);
       playLayer.removeChildren();
+      TimersSystem.shared.stopAll();
+      gameState = GameState.TapToStart;
+      ui.setShowStart(true);
+    }
+
+    function startGame(): void {
       jumper = new Jumper();
       jumper.position.set(startPosition.x, startPosition.y);
       cameraTargetPosition.x = -240 + startPosition.x;
@@ -76,15 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
       trail = new Trail(jumper.position);
       playLayer.addChild(trail);
       spawnCircle(startPosition, 50);
+      gameState = GameState.Playing;
+      ui.setShowStart(false);
     }
 
-    function spawnCircle(position?: SimpleVector2, radius?: number): void {
+    function spawnCircle(position?: SimpleVector2, radius?: number): Circle {
       position = position || {
         x: (jumper.attachedTo?.position.x || 0) + randomInt(-150, 150),
         y: (jumper.attachedTo?.position.y || 0) + randomInt(-550, -300)
       };
       const newCircle = Circle.spawn(position, radius);
       playLayer.addChild(newCircle);
+      return newCircle;
     }
 
     newGame();
@@ -98,7 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (activeTransition) {
         activeTransition.update(stage);
-      } else if (jumper) {
+      } else if (gameState === GameState.TapToStart) {
+        if (InputSystem.shared.keyPressed(CommonKeys.Space)) {
+          startGame();
+        }
+      } else if (gameState === GameState.Playing && jumper) {
         jumper.update(delta);
         trail.addPoint(jumper.position);
 
@@ -106,7 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
           (child) => child instanceof Circle
         ) as Circle[]) {
           circle.update(delta);
-          if (!jumper.attachedTo && circle.jumperState === CircleJumperState.Awaiting) {
+          if (
+            !jumper.attachedTo &&
+            circle.jumperState === CircleJumperState.Awaiting
+          ) {
             circle.checkJumperCollision(jumper);
           }
         }
