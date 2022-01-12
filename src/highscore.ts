@@ -1,4 +1,3 @@
-
 export function setHighscore(score: number): void {
   if (window.localStorage) {
     window.localStorage.setItem('highscore', score.toString());
@@ -23,4 +22,4 @@ export function getHighscore(): number {
 export default {
   setHighscore,
   getHighscore
-}
+};

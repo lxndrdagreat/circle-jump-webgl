@@ -11,7 +11,7 @@ import { loadGameAssets } from './loading';
 import ui from './ui-utils';
 import { Trail } from './trail';
 import { TimersSystem } from './systems/timers.system';
-import {getHighscore, setHighscore} from './highscore';
+import { getHighscore, setHighscore } from './highscore';
 
 enum GameState {
   TapToStart,
@@ -69,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     EventSystem.shared.connect('OutOfOrbits', onCircleOutOfOrbits);
 
+    function onCircleImploded([circle]: [Circle]): void {
+      // remove circle from the layer
+      playLayer.removeChild(circle);
+    }
+    EventSystem.shared.connect('CircleImploded', onCircleImploded);
+
     function newGame(): void {
       // cleanup / re-init
       if (score > 0 && score > getHighscore()) {
@@ -106,6 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return newCircle;
     }
 
+    function isPointOnScreen(position: SimpleVector2): boolean {
+      return !(
+        position.x < playLayer.pivot.x ||
+        position.x > renderer.width + playLayer.pivot.x ||
+        position.y < playLayer.pivot.y ||
+        position.y > renderer.height + playLayer.pivot.y
+      );
+    }
+
     newGame();
     wrapper.classList.add('ready');
 
@@ -137,6 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
             circle.jumperState === CircleJumperState.Awaiting
           ) {
             circle.checkJumperCollision(jumper);
+          } else if (
+            circle.jumperState === CircleJumperState.JumperJumped &&
+            circle.visible
+          ) {
+            if (!isPointOnScreen(circle.position)) {
+              circle.implode();
+            }
           }
         }
 

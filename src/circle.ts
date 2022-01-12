@@ -1,4 +1,4 @@
-import { Container /*Graphics,*/ /*SCALE_MODES*/ } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { Sprite } from '@pixi/sprite';
 import { Loader } from '@pixi/loaders';
 import { Text, TextStyle } from '@pixi/text';
@@ -38,15 +38,7 @@ export default class Circle extends Container {
     this.orbitSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
     this.rotationSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
 
-    // const g = new Graphics();
-    // g.beginFill(0xff0000);
-    // g.drawCircle(0, 0, radius);
-    // g.endFill();
-    // this.addChild(g);
-
-    this.spr = new Sprite(
-      Loader.shared.resources['/public/meteor-large.png'].texture
-    );
+    this.spr = new Sprite(Loader.shared.resources['/meteor-large.png'].texture);
     // spr.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
     this.spr.anchor.set(0.5, 0.5);
     const scale = (1.0 / 128) * (radius * 2);
@@ -58,11 +50,6 @@ export default class Circle extends Container {
     this.orbitPivot.addChild(this.orbitPosition);
     this.orbitPosition.position.set(this.radius + 25, 0);
     this.addChild(this.orbitPivot);
-
-    // const g2 = new Graphics();
-    // g2.beginFill(0xffff00);
-    // g2.drawCircle(0, 0, 2);
-    // this.orbitPosition.addChild(g2);
 
     const style = new TextStyle({
       fontFamily: 'Arial',
@@ -126,5 +113,9 @@ export default class Circle extends Container {
       return true;
     }
     return false;
+  }
+
+  implode(): void {
+    EventSystem.shared.trigger('CircleImploded', this);
   }
 }

@@ -1,5 +1,5 @@
 import { TimersSystem } from './systems/timers.system';
-import {getHighscore} from './highscore';
+import { getHighscore } from './highscore';
 
 export function scoreDiv(): HTMLElement {
   const score = document.getElementById('score');
@@ -44,7 +44,9 @@ export function highscoreDiv(): HTMLElement {
 }
 
 export function setupHighscore(): void {
-  highscoreDiv().querySelector('span')!.textContent = `Personal Best: ${getHighscore()}`;
+  highscoreDiv().querySelector(
+    'span'
+  )!.textContent = `Personal Best: ${getHighscore()}`;
 }
 
 export default {

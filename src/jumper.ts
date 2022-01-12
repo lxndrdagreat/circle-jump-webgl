@@ -10,7 +10,7 @@ export class Jumper extends Sprite {
   attachedTo: Circle | null = null;
 
   constructor() {
-    super(Loader.shared.resources['/public/jumper.png'].texture);
+    super(Loader.shared.resources['/jumper.png'].texture);
     this.anchor.set(0.5, 0.5);
     this.pivot.set(0.5, 1);
   }

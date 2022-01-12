@@ -1,4 +1,4 @@
-export type EventType = 'JumperCaptured' | 'OutOfOrbits';
+export type EventType = 'JumperCaptured' | 'OutOfOrbits' | 'CircleImploded';
 
 export class EventSystem {
   private static _instance: EventSystem | null = null;
