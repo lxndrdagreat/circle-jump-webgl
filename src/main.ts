@@ -11,6 +11,7 @@ import { loadGameAssets } from './loading';
 import ui from './ui-utils';
 import { Trail } from './trail';
 import { TimersSystem } from './systems/timers.system';
+import {getHighscore, setHighscore} from './highscore';
 
 enum GameState {
   TapToStart,
@@ -70,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function newGame(): void {
       // cleanup / re-init
+      if (score > 0 && score > getHighscore()) {
+        setHighscore(score);
+      }
       score = 0;
       ui.setScore(0);
       playLayer.removeChildren();

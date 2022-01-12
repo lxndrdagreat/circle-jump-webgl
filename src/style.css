@@ -103,14 +103,23 @@ body {
 }
 
 .start-2 {
-  text-align: center;
+  text-align: justify;
   font-size: 1.3rem;
+  width: 50vw;
+  max-width: 365px;
+  margin: 10vh auto 0;
 }
 
 .start-3 {
   text-align: center;
   font-size: 2.5rem;
   margin: auto 0 10vh;
+}
+
+.start-highscore {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 2vh 0;
 }
 
 .blink-text {

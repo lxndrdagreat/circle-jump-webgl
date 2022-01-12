@@ -1,4 +1,5 @@
 import { TimersSystem } from './systems/timers.system';
+import {getHighscore} from './highscore';
 
 export function scoreDiv(): HTMLElement {
   const score = document.getElementById('score');
@@ -27,10 +28,23 @@ export function setScore(score: number = 0): void {
 
 export function setShowStart(show: boolean): void {
   if (show) {
+    setupHighscore();
     startOverlayDiv().classList.remove('hide');
   } else {
     startOverlayDiv().classList.add('hide');
   }
+}
+
+export function highscoreDiv(): HTMLElement {
+  const div = document.getElementById('highscore');
+  if (!div) {
+    throw new Error('#highscore div does not exist.');
+  }
+  return div;
+}
+
+export function setupHighscore(): void {
+  highscoreDiv().querySelector('span')!.textContent = `Personal Best: ${getHighscore()}`;
 }
 
 export default {
