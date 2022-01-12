@@ -4,7 +4,8 @@ export enum KeyboardEventType {
 }
 
 export enum MouseEventType {
-  MOUSE_MOVE = 'MOUSE_MOVE'
+  MOUSE_MOVE = 'MOUSE_MOVE',
+  MOUSE_CLICK = 'MOUSE_CLICK'
 }
 
 export enum CommonKeys {
@@ -25,6 +26,7 @@ export class InputSystem {
   private newPressedKeys: string[] = [];
   private newReleasedKeys: string[] = [];
   private _mousePosition: { x: number; y: number } = { x: 0, y: 0 };
+  private wasMouseClicked: boolean = false;
 
   constructor(bindElement: HTMLElement | Window = window) {
     // Set up input bindings
@@ -48,6 +50,14 @@ export class InputSystem {
       }
       this._handleMouseEvent(event as MouseEvent, MouseEventType.MOUSE_MOVE);
     });
+
+    bindElement.addEventListener('click', (event: Event) => {
+      console.log(event.target);
+      if ((event.target as HTMLElement).nodeName !== 'CANVAS') {
+        return;
+      }
+      this._handleMouseEvent(event as MouseEvent, MouseEventType.MOUSE_CLICK);
+    });
   }
 
   static get shared(): InputSystem {
@@ -60,6 +70,7 @@ export class InputSystem {
   flush(): void {
     this.newPressedKeys = [];
     this.newReleasedKeys = [];
+    this.wasMouseClicked = false;
   }
 
   private _handleKeyboardEvent(
@@ -86,12 +97,16 @@ export class InputSystem {
     }
   }
 
-  private _handleMouseEvent(event: MouseEvent, _kind: MouseEventType): void {
+  private _handleMouseEvent(event: MouseEvent, kind: MouseEventType): void {
     const canvas = event.target as HTMLCanvasElement;
     this._mousePosition = {
       x: Math.round(event.clientX - canvas.getBoundingClientRect().left),
       y: Math.round(event.clientY - canvas.getBoundingClientRect().top)
     };
+
+    if (kind === MouseEventType.MOUSE_CLICK) {
+      this.wasMouseClicked = true;
+    }
   }
 
   /*
@@ -131,5 +146,12 @@ export class InputSystem {
 
   get mousePosition(): Readonly<{ x: number; y: number }> {
     return this._mousePosition;
+  }
+
+  /**
+   * Was the mouse clicked (since the last frame)
+   */
+  get mouseClicked(): boolean {
+    return this.wasMouseClicked;
   }
 }
