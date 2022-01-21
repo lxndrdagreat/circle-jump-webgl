@@ -63,6 +63,10 @@ export function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+export function randomFloat(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
+
 export function randomChoice<T>(list: T[]): T {
   if (list.length === 0) {
     throw new Error('Cannot choose from empty list.');

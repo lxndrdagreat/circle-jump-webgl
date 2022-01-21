@@ -6,6 +6,7 @@ import { Jumper } from './jumper';
 import {
   distanceBetweenVectors,
   randomChoice,
+  randomFloat,
   randomInt,
   SimpleVector2,
   Vector2
@@ -20,10 +21,16 @@ export enum CircleJumperState {
   JumperJumped
 }
 
+const minOrbitSpeed: number = Math.PI * 0.65;
+const maxOrbitSpeed: number = Math.PI * 1.25;
+
 export default class Circle extends Container {
   orbitPivot: Container = new Container();
   orbitPosition: Container = new Container();
-  private readonly orbitSpeed: number = Math.PI;
+  private readonly orbitSpeed: number = randomFloat(
+    minOrbitSpeed,
+    maxOrbitSpeed
+  );
   private readonly rotationSpeed: number = Math.PI * 0.02;
   private orbitStart: number = 0;
   private currentOrbits: number = 3;
