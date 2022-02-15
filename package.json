@@ -2,7 +2,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=/circle-jump-webgl/",
     "serve": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,css}\"",
     "lint": "prettier --check \"src/**/*.{ts,css}\""
