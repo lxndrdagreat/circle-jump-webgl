@@ -194,20 +194,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // TODO: remove for production
-  /* @ts-ignore */
-  (function () {
-    var script = document.createElement('script');
-    script.onload = function () {
-      // @ts-ignore
-      var stats = new Stats();
-      document.body.appendChild(stats.dom);
-      requestAnimationFrame(function loop() {
-        stats.update();
-        requestAnimationFrame(loop);
-      });
-    };
-    script.src = '//mrdoob.github.io/stats.js/build/stats.min.js';
-    document.head.appendChild(script);
-  })();
+  // During development, show info via stats.js
+  if (import.meta.env.DEV) {
+    (function () {
+      const script = document.createElement('script');
+      script.onload = function () {
+        // @ts-ignore
+        const stats = new Stats();
+        document.body.appendChild(stats.dom);
+        requestAnimationFrame(function loop() {
+          stats.update();
+          requestAnimationFrame(loop);
+        });
+      };
+      script.src = '//mrdoob.github.io/stats.js/build/stats.min.js';
+      document.head.appendChild(script);
+    })();
+  }
 });

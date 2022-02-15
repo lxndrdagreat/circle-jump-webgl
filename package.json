@@ -7,6 +7,13 @@
     "format": "prettier --write \"src/**/*.{ts,css}\"",
     "lint": "prettier --check \"src/**/*.{ts,css}\""
   },
+  "keywords": [
+    "webgl",
+    "typescript",
+    "pixi.js",
+    "pixijs",
+    "game"
+  ],
   "devDependencies": {
     "pixi.js": "^6.2.1",
     "prettier": "^2.5.1",
