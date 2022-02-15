@@ -45,7 +45,7 @@ export default class Circle extends Container {
     this.orbitSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
     this.rotationSpeed *= Math.pow(-1, randomInt(0, 2) % 2);
 
-    this.spr = new Sprite(Loader.shared.resources['/meteor-large.png'].texture);
+    this.spr = new Sprite(Loader.shared.resources['meteor-large.png'].texture);
     // spr.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
     this.spr.anchor.set(0.5, 0.5);
     const scale = (1.0 / 128) * (radius * 2);

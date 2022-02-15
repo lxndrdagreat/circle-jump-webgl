@@ -21,7 +21,7 @@ export class Trail extends Container {
       this.points.push(new Point(initialPoint.x, initialPoint.y));
     }
 
-    const texture = Loader.shared.resources['/trail.png'].texture!;
+    const texture = Loader.shared.resources['trail.png'].texture!;
     this.rope = new SimpleRope(texture, this.points);
     this.rope.blendMode = BLEND_MODES.ADD;
     this.rope.tint = 0xffff77;
